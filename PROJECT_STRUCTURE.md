@@ -1,0 +1,470 @@
+# Complete Project Structure
+
+## 📁 Full File and Folder Structure
+
+```
+online-book-store-application/
+├── README.md
+├── PROJECT_STRUCTURE.md
+├── docker-compose.yml                    # Main orchestration file
+├── .gitignore
+├── .env.example
+│
+├── bookstore-microservices/              # Backend Microservices
+│   ├── README.md
+│   ├── docker-compose.yml               # Microservices orchestration
+│   ├── .env
+│   │
+│   ├── api-gateway/                     # API Gateway Service
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   ├── Dockerfile
+│   │   ├── .env
+│   │   ├── src/
+│   │   │   ├── app.js
+│   │   │   ├── config/
+│   │   │   │   ├── database.js
+│   │   │   │   └── redis.js
+│   │   │   ├── middleware/
+│   │   │   │   ├── auth.js
+│   │   │   │   ├── rateLimiter.js
+│   │   │   │   └── cors.js
+│   │   │   ├── routes/
+│   │   │   │   ├── user.js
+│   │   │   │   ├── book.js
+│   │   │   │   ├── order.js
+│   │   │   │   ├── payment.js
+│   │   │   │   └── notification.js
+│   │   │   ├── services/
+│   │   │   │   ├── userService.js
+│   │   │   │   ├── bookService.js
+│   │   │   │   ├── orderService.js
+│   │   │   │   ├── paymentService.js
+│   │   │   │   └── notificationService.js
+│   │   │   └── utils/
+│   │   │       ├── logger.js
+│   │   │       └── validator.js
+│   │   └── tests/
+│   │       ├── unit/
+│   │       └── integration/
+│   │
+│   ├── user-service/                    # User Management Service
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   ├── Dockerfile
+│   │   ├── .env
+│   │   ├── src/
+│   │   │   ├── app.js
+│   │   │   ├── config/
+│   │   │   │   └── database.js
+│   │   │   ├── models/
+│   │   │   │   └── User.js
+│   │   │   ├── controllers/
+│   │   │   │   ├── authController.js
+│   │   │   │   └── userController.js
+│   │   │   ├── routes/
+│   │   │   │   ├── auth.js
+│   │   │   │   └── user.js
+│   │   │   ├── middleware/
+│   │   │   │   ├── auth.js
+│   │   │   │   └── validation.js
+│   │   │   ├── services/
+│   │   │   │   ├── authService.js
+│   │   │   │   └── userService.js
+│   │   │   └── utils/
+│   │   │       ├── bcrypt.js
+│   │   │       ├── jwt.js
+│   │   │       └── email.js
+│   │   └── tests/
+│   │       ├── unit/
+│   │       └── integration/
+│   │
+│   ├── book-service/                    # Book Catalog Service
+│   │   ├── pom.xml                     # Maven configuration
+│   │   ├── Dockerfile
+│   │   ├── .env
+│   │   ├── src/
+│   │   │   └── main/
+│   │   │       ├── java/
+│   │   │       │   └── com/bookstore/book/
+│   │   │       │       ├── BookServiceApplication.java
+│   │   │       │       ├── controller/
+│   │   │       │       │   └── BookController.java
+│   │   │       │       ├── model/
+│   │   │       │       │   ├── Book.java
+│   │   │       │       │   └── Category.java
+│   │   │       │       ├── repository/
+│   │   │       │       │   └── BookRepository.java
+│   │   │       │       ├── service/
+│   │   │       │       │   └── BookService.java
+│   │   │       │       └── config/
+│   │   │       │           └── DatabaseConfig.java
+│   │   │       └── resources/
+│   │   │           ├── application.yml
+│   │   │           └── application.properties
+│   │   └── tests/
+│   │       ├── unit/
+│   │       └── integration/
+│   │
+│   ├── order-service/                   # Order Processing Service
+│   │   ├── requirements.txt
+│   │   ├── Dockerfile
+│   │   ├── .env
+│   │   ├── src/
+│   │   │   ├── app.py
+│   │   │   ├── models/
+│   │   │   │   ├── order.py
+│   │   │   │   └── order_item.py
+│   │   │   ├── controllers/
+│   │   │   │   └── order_controller.py
+│   │   │   ├── routes/
+│   │   │   │   └── order_routes.py
+│   │   │   ├── services/
+│   │   │   │   ├── order_service.py
+│   │   │   │   └── payment_integration.py
+│   │   │   ├── utils/
+│   │   │   │   ├── database.py
+│   │   │   │   └── validators.py
+│   │   │   └── config/
+│   │   │       └── settings.py
+│   │   └── tests/
+│   │       ├── unit/
+│   │       └── integration/
+│   │
+│   ├── payment-service/                 # Payment Processing Service
+│   │   ├── pom.xml
+│   │   ├── Dockerfile
+│   │   ├── .env
+│   │   ├── src/
+│   │   │   └── main/
+│   │   │       ├── java/
+│   │   │       │   └── com/bookstore/payment/
+│   │   │       │       ├── PaymentServiceApplication.java
+│   │   │       │       ├── controller/
+│   │   │       │       │   └── PaymentController.java
+│   │   │       │       ├── model/
+│   │   │       │       │   ├── Payment.java
+│   │   │       │       │   └── Transaction.java
+│   │   │       │       ├── repository/
+│   │   │       │       │   └── PaymentRepository.java
+│   │   │       │       ├── service/
+│   │   │       │       │   ├── PaymentService.java
+│   │   │       │       │   └── StripeService.java
+│   │   │       │       └── config/
+│   │   │       │           └── DatabaseConfig.java
+│   │   │       └── resources/
+│   │   │           ├── application.yml
+│   │   │           └── application.properties
+│   │   └── tests/
+│   │       ├── unit/
+│   │       └── integration/
+│   │
+│   ├── notification-service/            # Notification Service
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   ├── Dockerfile
+│   │   ├── .env
+│   │   ├── src/
+│   │   │   ├── app.js
+│   │   │   ├── config/
+│   │   │   │   ├── database.js
+│   │   │   │   └── rabbitmq.js
+│   │   │   ├── models/
+│   │   │   │   └── Notification.js
+│   │   │   ├── controllers/
+│   │   │   │   └── notificationController.js
+│   │   │   ├── routes/
+│   │   │   │   └── notification.js
+│   │   │   ├── services/
+│   │   │   │   ├── emailService.js
+│   │   │   │   ├── smsService.js
+│   │   │   │   └── pushNotificationService.js
+│   │   │   ├── workers/
+│   │   │   │   └── notificationWorker.js
+│   │   │   └── templates/
+│   │   │       ├── email/
+│   │   │       └── sms/
+│   │   └── tests/
+│   │       ├── unit/
+│   │       └── integration/
+│   │
+│   └── shared/                          # Shared Libraries
+│       ├── common/
+│       │   ├── models/
+│       │   ├── utils/
+│       │   └── constants/
+│       └── database/
+│           ├── migrations/
+│           └── seeds/
+│
+├── react-client/                        # React Frontend
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── next.config.js
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   ├── Dockerfile
+│   ├── .env.local
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── logo.svg
+│   │   └── images/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── globals.css
+│   │   │   ├── components/
+│   │   │   │   ├── ui/
+│   │   │   │   ├── forms/
+│   │   │   │   ├── navigation/
+│   │   │   │   └── layout/
+│   │   │   ├── pages/
+│   │   │   │   ├── books/
+│   │   │   │   ├── cart/
+│   │   │   │   ├── checkout/
+│   │   │   │   ├── profile/
+│   │   │   │   └── auth/
+│   │   │   ├── hooks/
+│   │   │   ├── services/
+│   │   │   │   ├── api.ts
+│   │   │   │   ├── auth.ts
+│   │   │   │   └── books.ts
+│   │   │   ├── store/
+│   │   │   │   ├── authStore.ts
+│   │   │   │   ├── cartStore.ts
+│   │   │   │   └── bookStore.ts
+│   │   │   ├── utils/
+│   │   │   │   ├── constants.ts
+│   │   │   │   ├── helpers.ts
+│   │   │   │   └── validation.ts
+│   │   │   └── types/
+│   │   │       ├── auth.ts
+│   │   │       ├── book.ts
+│   │   │       └── order.ts
+│   │   └── styles/
+│   │       ├── globals.css
+│   │       └── components/
+│   └── tests/
+│       ├── unit/
+│       ├── integration/
+│       └── e2e/
+│
+├── angular-client/                      # Angular Frontend
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── angular.json
+│   ├── tsconfig.json
+│   ├── Dockerfile
+│   ├── .env
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── app.component.ts
+│   │   │   ├── app.component.html
+│   │   │   ├── app.component.scss
+│   │   │   ├── app.module.ts
+│   │   │   ├── app.routes.ts
+│   │   │   ├── components/
+│   │   │   │   ├── book-list/
+│   │   │   │   ├── book-detail/
+│   │   │   │   ├── cart/
+│   │   │   │   ├── checkout/
+│   │   │   │   ├── login/
+│   │   │   │   └── navigation/
+│   │   │   ├── services/
+│   │   │   │   ├── api.service.ts
+│   │   │   │   ├── auth.service.ts
+│   │   │   │   ├── book.service.ts
+│   │   │   │   ├── cart.service.ts
+│   │   │   │   └── order.service.ts
+│   │   │   ├── models/
+│   │   │   │   ├── user.model.ts
+│   │   │   │   ├── book.model.ts
+│   │   │   │   └── order.model.ts
+│   │   │   ├── guards/
+│   │   │   │   └── auth.guard.ts
+│   │   │   ├── interceptors/
+│   │   │   │   └── auth.interceptor.ts
+│   │   │   └── shared/
+│   │   │       ├── components/
+│   │   │       ├── pipes/
+│   │   │       └── directives/
+│   │   ├── assets/
+│   │   │   ├── images/
+│   │   │   └── icons/
+│   │   ├── environments/
+│   │   │   ├── environment.ts
+│   │   │   └── environment.prod.ts
+│   │   └── styles/
+│   │       ├── styles.scss
+│   │       └── themes/
+│   └── tests/
+│       ├── unit/
+│       ├── integration/
+│       └── e2e/
+│
+├── vue-client/                          # Vue.js Frontend
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── nuxt.config.ts
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   ├── Dockerfile
+│   ├── .env
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── logo.svg
+│   │   └── images/
+│   ├── components/
+│   │   ├── ui/
+│   │   ├── forms/
+│   │   ├── navigation/
+│   │   └── layout/
+│   ├── pages/
+│   │   ├── index.vue
+│   │   ├── books/
+│   │   │   ├── index.vue
+│   │   │   └── [id].vue
+│   │   ├── cart/
+│   │   │   └── index.vue
+│   │   ├── checkout/
+│   │   │   └── index.vue
+│   │   ├── profile/
+│   │   │   └── index.vue
+│   │   └── auth/
+│   │       ├── login.vue
+│   │       └── register.vue
+│   ├── composables/
+│   │   ├── useAuth.ts
+│   │   ├── useCart.ts
+│   │   └── useBooks.ts
+│   │
+│   ├── services/
+│   │   ├── api.ts
+│   │   ├── auth.ts
+│   │   ├── books.ts
+│   │   └── orders.ts
+│   ├── stores/
+│   │   ├── auth.ts
+│   │   ├── cart.ts
+│   │   └── books.ts
+│   ├── types/
+│   │   ├── auth.ts
+│   │   ├── book.ts
+│   │   └── order.ts
+│   ├── utils/
+│   │   ├── constants.ts
+│   │   ├── helpers.ts
+│   │   └── validation.ts
+│   ├── middleware/
+│   │   └── auth.ts
+│   ├── plugins/
+│   │   └── api.client.ts
+│   ├── layouts/
+│   │   ├── default.vue
+│   │   └── auth.vue
+│   ├── assets/
+│   │   ├── css/
+│   │   │   └── main.css
+│   │   └── images/
+│   └── tests/
+│       ├── unit/
+│       ├── integration/
+│       └── e2e/
+│
+├── shared-docs/                         # Shared Documentation
+│   ├── api-documentation/
+│   │   ├── user-service-api.md
+│   │   ├── book-service-api.md
+│   │   ├── order-service-api.md
+│   │   ├── payment-service-api.md
+│   │   └── notification-service-api.md
+│   ├── database-schemas/
+│   │   ├── user-schema.sql
+│   │   ├── book-schema.sql
+│   │   ├── order-schema.sql
+│   │   └── payment-schema.sql
+│   └── deployment/
+│       ├── docker-setup.md
+│       ├── kubernetes-setup.md
+│       └── production-deployment.md
+│
+├── scripts/                             # Utility Scripts
+│   ├── setup.sh
+│   ├── start-all.sh
+│   ├── stop-all.sh
+│   ├── build-all.sh
+│   └── test-all.sh
+│
+└── monitoring/                          # Monitoring & Logging
+    ├── prometheus/
+    │   ├── prometheus.yml
+    │   └── Dockerfile
+    ├── grafana/
+    │   ├── dashboards/
+    │   └── Dockerfile
+    ├── elasticsearch/
+    │   └── Dockerfile
+    ├── kibana/
+    │   └── Dockerfile
+    └── jaeger/
+        └── Dockerfile
+```
+
+## 🗂️ Key Directories Explained
+
+### Backend Microservices
+- **api-gateway/**: Central entry point, routing, authentication
+- **user-service/**: User management, authentication, profiles
+- **book-service/**: Book catalog, inventory, search
+- **order-service/**: Order processing, order history
+- **payment-service/**: Payment processing, transactions
+- **notification-service/**: Email, SMS, push notifications
+
+### Frontend Applications
+- **react-client/**: Next.js React application with TypeScript
+- **angular-client/**: Angular application with Material UI
+- **vue-client/**: Nuxt.js Vue.js application with TypeScript
+
+### Shared Resources
+- **shared/**: Common libraries and utilities
+- **shared-docs/**: API documentation and schemas
+- **scripts/**: Automation and utility scripts
+- **monitoring/**: Observability and logging tools
+
+## 🚀 Quick Start Commands
+
+```bash
+# Start all microservices
+cd bookstore-microservices
+docker-compose up -d
+
+# Start React client
+cd react-client
+npm install && npm run dev
+
+# Start Angular client
+cd angular-client
+npm install && ng serve
+
+# Start Vue client
+cd vue-client
+npm install && npm run dev
+```
+
+## 📊 Port Assignments
+
+- **API Gateway**: 3000
+- **React Client**: 3001
+- **Vue Client**: 3002
+- **Angular Client**: 4200
+- **User Service**: 3003
+- **Book Service**: 3004
+- **Order Service**: 3005
+- **Payment Service**: 3006
+- **Notification Service**: 3007
+- **MongoDB**: 27017
+- **MySQL**: 3306
+- **PostgreSQL**: 5432
+- **RabbitMQ**: 5672
+- **Redis**: 6379
