@@ -13,68 +13,68 @@ online-book-store-application/
 ├── bookstore-microservices/              # Backend Microservices
 │   ├── README.md
 │   ├── docker-compose.yml               # Microservices orchestration
-│   ├── .env
+│   ├── .env.example
+│   ├── nginx/
+│   │   └── nginx.conf                   # Load balancer configuration
 │   │
-│   ├── api-gateway/                     # API Gateway Service
+│   ├── api-gateway/                     # API Gateway Service (Express + TypeScript)
 │   │   ├── package.json
 │   │   ├── package-lock.json
+│   │   ├── tsconfig.json
 │   │   ├── Dockerfile
-│   │   ├── .env
+│   │   ├── .dockerignore
 │   │   ├── src/
-│   │   │   ├── app.js
+│   │   │   ├── app.ts
 │   │   │   ├── config/
-│   │   │   │   ├── database.js
-│   │   │   │   └── redis.js
+│   │   │   │   ├── cors.ts
+│   │   │   │   └── database.ts
 │   │   │   ├── middleware/
-│   │   │   │   ├── auth.js
-│   │   │   │   ├── rateLimiter.js
-│   │   │   │   └── cors.js
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── rateLimiter.ts
+│   │   │   │   └── errorHandler.ts
 │   │   │   ├── routes/
-│   │   │   │   ├── user.js
-│   │   │   │   ├── book.js
-│   │   │   │   ├── order.js
-│   │   │   │   ├── payment.js
-│   │   │   │   └── notification.js
+│   │   │   │   ├── user.ts
+│   │   │   │   ├── book.ts
+│   │   │   │   ├── order.ts
+│   │   │   │   ├── payment.ts
+│   │   │   │   └── notification.ts
 │   │   │   ├── services/
-│   │   │   │   ├── userService.js
-│   │   │   │   ├── bookService.js
-│   │   │   │   ├── orderService.js
-│   │   │   │   ├── paymentService.js
-│   │   │   │   └── notificationService.js
+│   │   │   │   └── userService.ts
 │   │   │   └── utils/
-│   │   │       ├── logger.js
-│   │   │       └── validator.js
+│   │   │       ├── logger.ts
+│   │   │       └── validator.ts
 │   │   └── tests/
 │   │       ├── unit/
 │   │       └── integration/
 │   │
-│   ├── user-service/                    # User Management Service
+│   ├── user-service/                    # User Management Service (Express + TypeScript)
 │   │   ├── package.json
 │   │   ├── package-lock.json
+│   │   ├── tsconfig.json
 │   │   ├── Dockerfile
-│   │   ├── .env
+│   │   ├── .dockerignore
 │   │   ├── src/
-│   │   │   ├── app.js
+│   │   │   ├── app.ts
 │   │   │   ├── config/
-│   │   │   │   └── database.js
+│   │   │   │   ├── database.ts
+│   │   │   │   └── cors.ts
 │   │   │   ├── models/
-│   │   │   │   └── User.js
+│   │   │   │   └── User.ts
 │   │   │   ├── controllers/
-│   │   │   │   ├── authController.js
-│   │   │   │   └── userController.js
+│   │   │   │   ├── authController.ts
+│   │   │   │   └── userController.ts
 │   │   │   ├── routes/
-│   │   │   │   ├── auth.js
-│   │   │   │   └── user.js
+│   │   │   │   ├── auth.ts
+│   │   │   │   └── user.ts
 │   │   │   ├── middleware/
-│   │   │   │   ├── auth.js
-│   │   │   │   └── validation.js
-│   │   │   ├── services/
-│   │   │   │   ├── authService.js
-│   │   │   │   └── userService.js
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── rateLimiter.ts
+│   │   │   │   └── errorHandler.ts
 │   │   │   └── utils/
-│   │   │       ├── bcrypt.js
-│   │   │       ├── jwt.js
-│   │   │       └── email.js
+│   │   │       ├── logger.ts
+│   │   │       ├── bcrypt.ts
+│   │   │       ├── jwt.ts
+│   │   │       └── email.ts
 │   │   └── tests/
 │   │       ├── unit/
 │   │       └── integration/
@@ -189,6 +189,8 @@ online-book-store-application/
 │   │       └── integration/
 │   │
 │   └── shared/                          # Shared Libraries
+│       ├── types/
+│       │   └── index.ts                 # TypeScript type definitions
 │       ├── common/
 │       │   ├── models/
 │       │   ├── utils/
@@ -414,12 +416,12 @@ online-book-store-application/
 ## 🗂️ Key Directories Explained
 
 ### Backend Microservices
-- **api-gateway/**: Central entry point, routing, authentication
-- **user-service/**: User management, authentication, profiles
-- **book-service/**: Book catalog, inventory, search
-- **order-service/**: Order processing, order history
-- **payment-service/**: Payment processing, transactions
-- **notification-service/**: Email, SMS, push notifications
+- **api-gateway/**: Central entry point, routing, authentication (Express + TypeScript)
+- **user-service/**: User management, authentication, profiles (Express + TypeScript)
+- **book-service/**: Book catalog, inventory, search (Java Spring Boot)
+- **order-service/**: Order processing, order history (Python Flask)
+- **payment-service/**: Payment processing, transactions (Java Spring Boot)
+- **notification-service/**: Email, SMS, push notifications (Node.js)
 
 ### Frontend Applications
 - **react-client/**: Next.js React application with TypeScript
@@ -432,23 +434,47 @@ online-book-store-application/
 - **scripts/**: Automation and utility scripts
 - **monitoring/**: Observability and logging tools
 
+## 🔧 TypeScript Implementation Features
+
+### API Gateway & User Service (Express + TypeScript)
+- **Full Type Safety**: Comprehensive TypeScript interfaces and types
+- **Strict Configuration**: Strict null checks, no implicit any
+- **Path Mapping**: Clean imports with @ aliases
+- **Source Maps**: Full debugging support
+- **JWT Authentication**: Token-based authentication with refresh tokens
+- **Rate Limiting**: Redis-backed rate limiting with different tiers
+- **Input Validation**: Joi schema validation for all endpoints
+- **Error Handling**: Centralized error handling with custom error classes
+- **Logging**: Winston structured logging with multiple transports
+- **Security**: Helmet security headers, CORS configuration
+- **Database**: MongoDB with Mongoose ODM
+- **Email Service**: Nodemailer integration for notifications
+- **Docker Support**: Multi-stage Docker builds with health checks
+
 ## 🚀 Quick Start Commands
 
 ```bash
-# Start all microservices
+# Start all microservices with Docker
 cd bookstore-microservices
 docker-compose up -d
 
+# Or run services locally for development
+cd bookstore-microservices/api-gateway
+npm install && npm run dev
+
+cd ../user-service
+npm install && npm run dev
+
 # Start React client
-cd react-client
+cd ../../react-client
 npm install && npm run dev
 
 # Start Angular client
-cd angular-client
+cd ../angular-client
 npm install && ng serve
 
 # Start Vue client
-cd vue-client
+cd ../vue-client
 npm install && npm run dev
 ```
 
