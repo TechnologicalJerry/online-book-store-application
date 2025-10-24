@@ -24,7 +24,8 @@ online-book-store-application/
 │   │   ├── Dockerfile
 │   │   ├── .dockerignore
 │   │   ├── src/
-│   │   │   ├── app.ts
+│   │   │   ├── app.ts                   # Express application configuration
+│   │   │   ├── server.ts               # Server startup and lifecycle
 │   │   │   ├── config/
 │   │   │   │   ├── cors.ts
 │   │   │   │   └── database.ts
@@ -54,7 +55,8 @@ online-book-store-application/
 │   │   ├── Dockerfile
 │   │   ├── .dockerignore
 │   │   ├── src/
-│   │   │   ├── app.ts
+│   │   │   ├── app.ts                   # Express application configuration
+│   │   │   ├── server.ts               # Server startup and lifecycle
 │   │   │   ├── config/
 │   │   │   │   ├── database.ts
 │   │   │   │   └── cors.ts
@@ -159,31 +161,40 @@ online-book-store-application/
 │   │       ├── unit/
 │   │       └── integration/
 │   │
-│   ├── notification-service/            # Notification Service
+│   ├── notification-service/            # Notification Service (Express + TypeScript)
 │   │   ├── package.json
 │   │   ├── package-lock.json
+│   │   ├── tsconfig.json
 │   │   ├── Dockerfile
-│   │   ├── .env
+│   │   ├── .dockerignore
+│   │   ├── README.md
 │   │   ├── src/
-│   │   │   ├── app.js
+│   │   │   ├── app.ts                   # Express application configuration
+│   │   │   ├── server.ts               # Server startup and lifecycle
 │   │   │   ├── config/
-│   │   │   │   ├── database.js
-│   │   │   │   └── rabbitmq.js
+│   │   │   │   ├── database.ts
+│   │   │   │   ├── redis.ts
+│   │   │   │   └── cors.ts
 │   │   │   ├── models/
-│   │   │   │   └── Notification.js
+│   │   │   │   └── Notification.ts
 │   │   │   ├── controllers/
-│   │   │   │   └── notificationController.js
+│   │   │   │   └── notificationController.ts
 │   │   │   ├── routes/
-│   │   │   │   └── notification.js
+│   │   │   │   └── notification.ts
 │   │   │   ├── services/
-│   │   │   │   ├── emailService.js
-│   │   │   │   ├── smsService.js
-│   │   │   │   └── pushNotificationService.js
+│   │   │   │   ├── emailService.ts
+│   │   │   │   ├── smsService.ts
+│   │   │   │   ├── pushNotificationService.ts
+│   │   │   │   └── notificationService.ts
+│   │   │   ├── middleware/
+│   │   │   │   ├── auth.ts
+│   │   │   │   ├── rateLimiter.ts
+│   │   │   │   └── errorHandler.ts
 │   │   │   ├── workers/
-│   │   │   │   └── notificationWorker.js
-│   │   │   └── templates/
-│   │   │       ├── email/
-│   │   │       └── sms/
+│   │   │   │   └── queueManager.ts
+│   │   │   └── utils/
+│   │   │       ├── logger.ts
+│   │   │       └── validator.ts
 │   │   └── tests/
 │   │       ├── unit/
 │   │       └── integration/
@@ -421,7 +432,7 @@ online-book-store-application/
 - **book-service/**: Book catalog, inventory, search (Java Spring Boot)
 - **order-service/**: Order processing, order history (Python Flask)
 - **payment-service/**: Payment processing, transactions (Java Spring Boot)
-- **notification-service/**: Email, SMS, push notifications (Node.js)
+- **notification-service/**: Email, SMS, push notifications (Express + TypeScript)
 
 ### Frontend Applications
 - **react-client/**: Next.js React application with TypeScript
@@ -436,11 +447,12 @@ online-book-store-application/
 
 ## 🔧 TypeScript Implementation Features
 
-### API Gateway & User Service (Express + TypeScript)
+### API Gateway, User Service & Notification Service (Express + TypeScript)
 - **Full Type Safety**: Comprehensive TypeScript interfaces and types
 - **Strict Configuration**: Strict null checks, no implicit any
 - **Path Mapping**: Clean imports with @ aliases
 - **Source Maps**: Full debugging support
+- **App/Server Separation**: Clean separation of Express app configuration and server lifecycle
 - **JWT Authentication**: Token-based authentication with refresh tokens
 - **Rate Limiting**: Redis-backed rate limiting with different tiers
 - **Input Validation**: Joi schema validation for all endpoints
@@ -449,6 +461,10 @@ online-book-store-application/
 - **Security**: Helmet security headers, CORS configuration
 - **Database**: MongoDB with Mongoose ODM
 - **Email Service**: Nodemailer integration for notifications
+- **SMS Service**: Twilio integration for SMS notifications
+- **Push Notifications**: Firebase Admin SDK for cross-platform push notifications
+- **Background Processing**: Redis-backed queues with Bull for async processing
+- **Graceful Shutdown**: Proper cleanup of connections and resources
 - **Docker Support**: Multi-stage Docker builds with health checks
 
 ## 🚀 Quick Start Commands
@@ -463,6 +479,9 @@ cd bookstore-microservices/api-gateway
 npm install && npm run dev
 
 cd ../user-service
+npm install && npm run dev
+
+cd ../notification-service
 npm install && npm run dev
 
 # Start React client
