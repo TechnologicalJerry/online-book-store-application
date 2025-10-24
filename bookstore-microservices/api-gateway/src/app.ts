@@ -2,12 +2,9 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import rateLimit from 'express-rate-limit';
-import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
-import { authMiddleware } from './middleware/auth';
 import { rateLimiter } from './middleware/rateLimiter';
 import { corsOptions } from './config/cors';
 import { userRoutes } from './routes/user';
@@ -16,13 +13,11 @@ import { orderRoutes } from './routes/order';
 import { paymentRoutes } from './routes/payment';
 import { notificationRoutes } from './routes/notification';
 
-class ApiGateway {
+class ApiGatewayApp {
   private app: Application;
-  private port: number;
 
   constructor() {
     this.app = express();
-    this.port = parseInt(process.env.PORT || '3000', 10);
     this.initializeMiddlewares();
     this.initializeRoutes();
     this.initializeErrorHandling();
@@ -86,20 +81,12 @@ class ApiGateway {
     this.app.use(errorHandler);
   }
 
-  public start(): void {
-    this.app.listen(this.port, () => {
-      logger.info(`API Gateway server running on port ${this.port}`);
-      logger.info(`Environment: ${process.env.NODE_ENV}`);
-    });
-  }
-
   public getApp(): Application {
     return this.app;
   }
 }
 
-// Start the server
-const apiGateway = new ApiGateway();
-apiGateway.start();
-
-export default apiGateway;
+// Create and export the app instance
+const apiGatewayApp = new ApiGatewayApp();
+export const app = apiGatewayApp.getApp();
+export default app;
