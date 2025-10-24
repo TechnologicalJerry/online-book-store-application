@@ -2,7 +2,7 @@
   "name": "notification-service",
   "version": "1.0.0",
   "description": "Notification Service for Online Book Store",
-  "main": "dist/app.js",
+  "main": "dist/server.js",
   "scripts": {
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
