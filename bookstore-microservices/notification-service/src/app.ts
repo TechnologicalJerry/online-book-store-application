@@ -2,28 +2,18 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 
 import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
-import { authMiddleware } from './middleware/auth';
 import { rateLimiter } from './middleware/rateLimiter';
 import { corsOptions } from './config/cors';
-import { connectDatabase } from './config/database';
-import { connectRedis } from './config/redis';
 import { notificationRoutes } from './routes/notification';
-import { initializeQueues } from './workers/queueManager';
 
-// Load environment variables
-dotenv.config();
-
-class NotificationService {
+class NotificationApp {
   private app: Application;
-  private port: number;
 
   constructor() {
     this.app = express();
-    this.port = parseInt(process.env.PORT || '3007', 10);
     this.initializeMiddlewares();
     this.initializeRoutes();
     this.initializeErrorHandling();
@@ -83,35 +73,12 @@ class NotificationService {
     this.app.use(errorHandler);
   }
 
-  public async start(): Promise<void> {
-    try {
-      // Connect to database
-      await connectDatabase();
-      
-      // Connect to Redis
-      await connectRedis();
-      
-      // Initialize queues
-      await initializeQueues();
-      
-      // Start the server
-      this.app.listen(this.port, () => {
-        logger.info(`Notification Service server running on port ${this.port}`);
-        logger.info(`Environment: ${process.env.NODE_ENV}`);
-      });
-    } catch (error) {
-      logger.error('Failed to start Notification Service:', error);
-      process.exit(1);
-    }
-  }
-
   public getApp(): Application {
     return this.app;
   }
 }
 
-// Start the server
-const notificationService = new NotificationService();
-notificationService.start();
-
-export default notificationService;
+// Create and export the app instance
+const notificationApp = new NotificationApp();
+export const app = notificationApp.getApp();
+export default app;
