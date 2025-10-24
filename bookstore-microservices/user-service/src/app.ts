@@ -2,28 +2,19 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
 
 import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
-import { authMiddleware } from './middleware/auth';
 import { rateLimiter } from './middleware/rateLimiter';
 import { corsOptions } from './config/cors';
-import { connectDatabase } from './config/database';
 import { userRoutes } from './routes/user';
 import { authRoutes } from './routes/auth';
 
-// Load environment variables
-dotenv.config();
-
-class UserService {
+class UserServiceApp {
   private app: Application;
-  private port: number;
 
   constructor() {
     this.app = express();
-    this.port = parseInt(process.env.PORT || '3003', 10);
     this.initializeMiddlewares();
     this.initializeRoutes();
     this.initializeErrorHandling();
@@ -84,29 +75,12 @@ class UserService {
     this.app.use(errorHandler);
   }
 
-  public async start(): Promise<void> {
-    try {
-      // Connect to database
-      await connectDatabase();
-      
-      // Start the server
-      this.app.listen(this.port, () => {
-        logger.info(`User Service server running on port ${this.port}`);
-        logger.info(`Environment: ${process.env.NODE_ENV}`);
-      });
-    } catch (error) {
-      logger.error('Failed to start User Service:', error);
-      process.exit(1);
-    }
-  }
-
   public getApp(): Application {
     return this.app;
   }
 }
 
-// Start the server
-const userService = new UserService();
-userService.start();
-
-export default userService;
+// Create and export the app instance
+const userServiceApp = new UserServiceApp();
+export const app = userServiceApp.getApp();
+export default app;
